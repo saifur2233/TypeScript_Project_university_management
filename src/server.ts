@@ -1,15 +1,18 @@
-import express, { Express, Request, Response } from "express";
-import dotenv from "dotenv";
+import mongoose from "mongoose";
+import config from "./config/index";
+import app from "./app";
 
-dotenv.config();
+async function boostrap() {
+  try {
+    await mongoose.connect(config.database_url as string);
+    console.log(`🛢 Database is connected successfully`);
 
-const app: Express = express();
-const port = process.env.PORT;
+    app.listen(config.port, () => {
+      console.log(`Application  listening on port ${config.port}`);
+    });
+  } catch (err) {
+    console.log("Failed to connect database", err);
+  }
+}
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Express + TypeScript Server");
-});
-
-app.listen(port, () => {
-  console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
-});
+boostrap();
