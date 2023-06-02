@@ -1,1 +1,2 @@
 npm init
+https://blog.logrocket.com/linting-typescript-eslint-prettier/
