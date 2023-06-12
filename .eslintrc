@@ -13,7 +13,7 @@
   ],
   "rules": {
     "no-unused-vars": "error",
-    "no-console": "warn",
+    "no-console": "error",
     "no-undef": "error",
     "no-unused-expressions": "error",
     "no-unreachable": "error",
@@ -22,10 +22,6 @@
 
   "env": {
     "browser": true,
-    "es2021": true,
-    "node": true
-  },
-  "globals": {
-    "process": "readonly"
+    "es2021": true
   }
 }
