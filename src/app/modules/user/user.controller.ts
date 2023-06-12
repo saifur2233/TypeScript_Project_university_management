@@ -17,7 +17,6 @@ const createUser: RequestHandler = catchAsync(
       message: 'user created successfully!',
       data: result,
     })
-    next()
   }
 )
 
