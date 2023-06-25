@@ -22,7 +22,7 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   sendResponse<ILoginUserResponse>(res, {
     statusCode: 200,
     success: true,
-    message: 'User lohggedin successfully !',
+    message: 'User login successfully !',
     data: others,
   })
 })
@@ -44,7 +44,7 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IRefreshTokenResponse>(res, {
     statusCode: 200,
     success: true,
-    message: 'User lohggedin successfully !',
+    message: 'User login successfully !',
     data: result,
   })
 })
