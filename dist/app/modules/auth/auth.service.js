@@ -68,7 +68,40 @@ const refreshToken = (token) => __awaiter(void 0, void 0, void 0, function* () {
         accessToken: newAccessToken,
     };
 });
+const changePassword = (user, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const { oldPassword, newPassword } = payload;
+    // // checking is user exist
+    // const isUserExist = await User.isUserExist(user?.userId);
+    //alternative way
+    const isUserExist = yield user_model_1.User.findOne({ id: user === null || user === void 0 ? void 0 : user.userId }).select('+password');
+    if (!isUserExist) {
+        throw new ApiError_1.default(http_status_1.default.NOT_FOUND, 'User does not exist');
+    }
+    // checking old password
+    if (isUserExist.password &&
+        !(yield user_model_1.User.isPasswordMatched(oldPassword, isUserExist.password))) {
+        throw new ApiError_1.default(http_status_1.default.UNAUTHORIZED, 'Old Password is incorrect');
+    }
+    // // hash password before saving
+    // const newHashedPassword = await bcrypt.hash(
+    //   newPassword,
+    //   Number(config.bycrypt_salt_rounds)
+    // );
+    // const query = { id: user?.userId };
+    // const updatedData = {
+    //   password: newHashedPassword,  //
+    //   needsPasswordChange: false,
+    //   passwordChangedAt: new Date(), //
+    // };
+    // await User.findOneAndUpdate(query, updatedData);
+    // data update
+    isUserExist.password = newPassword;
+    isUserExist.needsPasswordChange = false;
+    // updating using save()
+    isUserExist.save();
+});
 exports.AuthService = {
     loginUser,
     refreshToken,
+    changePassword,
 };
