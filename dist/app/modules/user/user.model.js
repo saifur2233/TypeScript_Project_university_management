@@ -36,6 +36,9 @@ const UserSchema = new mongoose_1.Schema({
         type: Boolean,
         default: true,
     },
+    passwordChangedAt: {
+        type: Date,
+    },
     student: {
         type: mongoose_1.Schema.Types.ObjectId,
         ref: 'Student',
@@ -64,12 +67,18 @@ UserSchema.statics.isPasswordMatched = function (givenPassword, savedPassword) {
         return yield bcrypt_1.default.compare(givenPassword, savedPassword);
     });
 };
+UserSchema.methods.changedPasswordAfterJwtIssued = function (jwtTimestamp) {
+    console.log({ jwtTimestamp }, 'hi');
+};
 // User.create() / user.save()
 UserSchema.pre('save', function (next) {
     return __awaiter(this, void 0, void 0, function* () {
         // hashing user password
         const user = this;
         user.password = yield bcrypt_1.default.hash(user.password, Number(config_1.default.bycrypt_salt_rounds));
+        if (!user.needsPasswordChange) {
+            user.passwordChangedAt = new Date();
+        }
         next();
     });
 });
